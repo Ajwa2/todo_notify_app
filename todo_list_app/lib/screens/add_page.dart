@@ -20,32 +20,66 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
 //create dateline and timeline variable
 
-  DateTime dateTime = DateTime.now();
-  TimeOfDay timeOfDay = TimeOfDay(hour: 8, minute: 30);
+  // DateTime dateTime = DateTime.now();
+  //TimeOfDay timeOfDay = TimeOfDay(hour: 8, minute: 30);
 
 //show date picker method
-  void _showDatePiker() {
-    showDatePicker(
+  // void _showDatePiker() {
+  //   showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2030),
+  //   ).then((value) {
+  //     setState(() {
+  //       dateTime = value!;
+  //     });
+  //   });
+  // }
+
+//-------------------------------------------------
+
+  //trail decleration
+
+  DateTime? selectedDate;
+
+  void _showDatePicker() async {
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030),
-    ).then((value) {
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );   if (pickedDate != null) {
       setState(() {
-        dateTime = value!;
+        selectedDate = pickedDate;
       });
-    });
+    }
   }
 
-//show date picker method
-  void _showTimePicker() {
-    showTimePicker(context: context, initialTime: TimeOfDay.now())
-        .then((value) {
+  TimeOfDay? selectedTime;
+
+  void _showTimePicker() async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedTime != null && pickedTime != selectedTime) {
       setState(() {
-        timeOfDay = value!;
+        selectedTime = pickedTime;
       });
-    });
+    }
   }
+//-------------------------------------------------
+//show date picker method
+  // void _showTimePicker() {
+  //   showTimePicker(context: context, initialTime: TimeOfDay.now())
+  //       .then((value) {
+  //     setState(() {
+  //       timeOfDay = value!;
+  //     });
+  //   });
+  // }
 
   @override
   void initState() {
@@ -57,6 +91,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
       final description = todo['description'];
       titleController.text = title;
       descriptionController.text = description;
+      // -------------------------------------
+      selectedDate = todo['dueDate'];
+      selectedTime = todo['dueTime'];
+      //---------------------------------------
     }
   }
 
@@ -88,15 +126,15 @@ class _AddTodoPageState extends State<AddTodoPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  //_dateTime.toString(),
-                  DateFormat.yMMMd().format(dateTime).toString(),
-                  style: TextStyle(fontSize: 15),
-                ),
-                Text(
-                  timeOfDay.format(context).toString(),
-                  style: TextStyle(fontSize: 15),
-                ),
+                // Text(
+                //   //_dateTime.toString(),
+                //   DateFormat.yMMMd().format(context).toString(),
+                //   style: TextStyle(fontSize: 15),
+                // ),
+                // Text(
+                //   selectedTime.format(context).toString(),
+                //   style: TextStyle(fontSize: 15),
+                // ),
               ],
             ),
             const SizedBox(
@@ -106,7 +144,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 MaterialButton(
-                  onPressed: _showDatePiker,
+                  onPressed: _showDatePicker,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(

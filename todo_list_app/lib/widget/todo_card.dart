@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 class TodoCard extends StatelessWidget {
   final int index;
   final Map item;
   final Function(Map) navigateEdit;
   final Function(String) deleteById;
-  // final DateTime dateTime;
-  // final TimeOfDay timeOfDay;
+  //-------------------------------
+    final DateTime selectedDate;
+    final TimeOfDay selectedTime;
 
   const TodoCard({
     super.key,
@@ -15,13 +16,18 @@ class TodoCard extends StatelessWidget {
     required this.item,
     required this.navigateEdit,
     required this.deleteById,
-    // required this.dateTime,
-    // required this.timeOfDay,
+    //----------------------------
+    // required this.selectedDate,
+    // required this.selectedTime,
+  
   });
 
   @override
   Widget build(BuildContext context) {
     final id = item['_id'] as String;
+    // final dueDate = item['dueDate'] as String?;
+    // final dueTime = item['dueTime'] as String?;
+
     return Card(
       child: ListTile(
         leading: CircleAvatar(child: Text('${index + 1}')),
@@ -33,10 +39,12 @@ class TodoCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Text(selectedDate!= null? DateFormat.yMMMd().format(selectedDate!):''),
                 // Text(DateFormat.yMMMd().format(dateTime).toString()),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  // child: Text(timeOfDay.format(context).toString()),
+                  child: Text(selectedTime!= null ? selectedTime.format(context).toString(): ''), 
+                  // Text(timeOfDay.format(context).toString()),
                 )
               ],
             ),
@@ -46,7 +54,6 @@ class TodoCard extends StatelessWidget {
           if (value == 'edit') {
             //open the edit button
             navigateEdit(item);
-
           } else if (value == 'delete') {
             //delete and remove the item
             deleteById(id);
@@ -60,8 +67,7 @@ class TodoCard extends StatelessWidget {
             PopupMenuItem(
               value: 'delete',
               child: Text('Delete'),
-            )
-          ];
+            )];
         }),
       ),
     );
