@@ -19,7 +19,6 @@ class _AddTodoPageState extends State<AddTodoPage> {
   bool isEdit = false;
 
 //create dateline and timeline variable
-
   // DateTime dateTime = DateTime.now();
   //TimeOfDay timeOfDay = TimeOfDay(hour: 8, minute: 30);
 
