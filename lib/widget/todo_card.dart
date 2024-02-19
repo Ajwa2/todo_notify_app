@@ -7,8 +7,8 @@ class TodoCard extends StatelessWidget {
   final Function(Map) navigateEdit;
   final Function(String) deleteById;
   //-------------------------------
-    final DateTime selectedDate;
-    final TimeOfDay selectedTime;
+    // final DateTime selectedDate;
+    // final TimeOfDay selectedTime;
 
   const TodoCard({
     super.key,
