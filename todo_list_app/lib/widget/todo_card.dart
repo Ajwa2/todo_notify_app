@@ -6,7 +6,6 @@ class TodoCard extends StatelessWidget {
   final Map item;
   final Function(Map) navigateEdit;
   final Function(String) deleteById;
-  //-------------------------------
   final DateTime selectedDate;
   final TimeOfDay selectedTime;
 
@@ -16,7 +15,6 @@ class TodoCard extends StatelessWidget {
     required this.item,
     required this.navigateEdit,
     required this.deleteById,
-    //----------------------------
     required this.selectedDate,
     required this.selectedTime,
   
@@ -61,6 +59,7 @@ class TodoCard extends StatelessWidget {
               value: 'edit',
               child: Text('Edit'),
             ),
+
             PopupMenuItem(
               value: 'delete',
               child: Text('Delete'),
