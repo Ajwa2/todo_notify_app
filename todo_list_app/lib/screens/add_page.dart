@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_list_app/services/todo_service.dart';
 import 'package:todo_list_app/utils/snackbar_helper.dart';
 // import 'package:intl/intl.dart';
@@ -9,8 +10,6 @@ class AddTodoPage extends StatefulWidget {
     super.key,
     this.todo,
   });
-
-
 
   @override
   State<AddTodoPage> createState() => _AddTodoPageState();
@@ -45,33 +44,33 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   DateTime? selectedDate;
 
-  void _showDatePicker() async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    );   if (pickedDate != null) {
-      setState(() {
-        selectedDate = pickedDate;
-      });
-    }
-  }
+  // void _showDatePicker() async {
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime(2100),
+  //   );   if (pickedDate != null) {
+  //     setState(() {
+  //       selectedDate = pickedDate;
+  //     });
+  //   }
+  // }
 
   TimeOfDay? selectedTime;
 
-  void _showTimePicker() async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
+  // void _showTimePicker() async {
+  //   final TimeOfDay? pickedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.now(),
+  //   );
 
-    if (pickedTime != null && pickedTime != selectedTime) {
-      setState(() {
-        selectedTime = pickedTime;
-      });
-    }
-  }
+  //   if (pickedTime != null && pickedTime != selectedTime) {
+  //     setState(() {
+  //       selectedTime = pickedTime;
+  //     });
+  //   }
+  // }
 //-------------------------------------------------
 //show date picker method
   // void _showTimePicker() {
@@ -128,15 +127,17 @@ class _AddTodoPageState extends State<AddTodoPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Text(
-                //   //_dateTime.toString(),
-                //   DateFormat.yMMMd().format(context).toString(),
-                //   style: TextStyle(fontSize: 15),
-                // ),
-                // Text(
-                //   selectedTime.format(context).toString(),
-                //   style: TextStyle(fontSize: 15),
-                // ),
+                Text(
+                  //_dateTime.toString(),
+                  //DateFormat.yMMMd().format(selectedDate!).toString(),
+                  selectedDate != null? DateFormat.yMMMd().format(selectedDate!).toString(): 'No Date Selected' ,
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  //selectedTime!.format(context).toString(),
+                  selectedTime!= null? selectedTime!.format(context).toString(): 'No Time Selected',
+                  style: TextStyle(fontSize: 15),
+                ),
               ],
             ),
             const SizedBox(
@@ -182,6 +183,32 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ));
   }
 
+
+  void _showDatePicker() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );   if (pickedDate != null) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
+  void _showTimePicker() async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null && pickedTime != selectedTime) {
+      setState(() {
+        selectedTime = pickedTime;
+      });
+    }
+  }
+
   Future<void> updateData() async {
     final todo = widget.todo;
     if (todo == null) {
@@ -218,6 +245,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
       "title": title,
       "description": description,
       "is_completed": false,
+      "dueDate":selectedDate,
+      "dueTime":selectedTime,
     };
   }
 }

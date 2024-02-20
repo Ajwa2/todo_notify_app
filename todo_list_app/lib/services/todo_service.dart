@@ -37,7 +37,8 @@ class TodoService {
     final url = 'https://api.nstack.in/v1/todos';
     final uri = Uri.parse(url);
     final response = await http.post(uri,
-        body: jsonEncode(body), headers: {'content-Type': 'application/json'});
+        body: jsonEncode(body), 
+        headers: {'content-Type': 'application/json'});
     return response.statusCode == 201;
   }
 }

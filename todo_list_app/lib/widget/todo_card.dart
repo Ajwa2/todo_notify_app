@@ -7,8 +7,8 @@ class TodoCard extends StatelessWidget {
   final Function(Map) navigateEdit;
   final Function(String) deleteById;
   //-------------------------------
-    // final DateTime selectedDate;
-    // final TimeOfDay selectedTime;
+  final DateTime selectedDate;
+  final TimeOfDay selectedTime;
 
   const TodoCard({
     super.key,
@@ -17,17 +17,14 @@ class TodoCard extends StatelessWidget {
     required this.navigateEdit,
     required this.deleteById,
     //----------------------------
-    // required this.selectedDate,
-    // required this.selectedTime,
+    required this.selectedDate,
+    required this.selectedTime,
   
   });
 
   @override
   Widget build(BuildContext context) {
     final id = item['_id'] as String;
-    // final dueDate = item['dueDate'] as String?;
-    // final dueTime = item['dueTime'] as String?;
-
     return Card(
       child: ListTile(
         leading: CircleAvatar(child: Text('${index + 1}')),
@@ -36,14 +33,14 @@ class TodoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(item['description']),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(selectedDate!= null? DateFormat.yMMMd().format(selectedDate!):''),
+                Text(DateFormat.yMMMd().format(selectedDate)),
                 // Text(DateFormat.yMMMd().format(dateTime).toString()),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(selectedTime!= null ? selectedTime.format(context).toString(): ''), 
+                  child: Text(selectedTime.format(context).toString()), 
                   // Text(timeOfDay.format(context).toString()),
                 )
               ],
