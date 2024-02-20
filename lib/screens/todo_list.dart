@@ -14,6 +14,8 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   bool isLoading = true;
   List items = [];
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
   @override
   void initState() {
     super.initState();
@@ -51,7 +53,9 @@ class _TodoListPageState extends State<TodoListPage> {
                       index: index,
                       item: item,
                       navigateEdit: navigateToEditPage,
-                      deleteById: deleteById);
+                      deleteById: deleteById,
+                      selectedDate: selectedDate,
+                      selectedTime: selectedTime);
                 }),
           ),
         ),
