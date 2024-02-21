@@ -64,22 +64,47 @@ class _TodoListPageState extends State<TodoListPage> {
   }
 
   Future<void> navigateToEditPage(Map item) async {
-    final route = MaterialPageRoute(
-      builder: (context) => AddTodoPage(todo: item),
-    );
-    await Navigator.push(context, route);
-    setState(() {
-      isLoading = true;
-    });
+    // final route = MaterialPageRoute(
+    //   builder: (context) => AddTodoPage(todo: item),
+    // );
+    // await Navigator.push(context, route);
+    // setState(() {
+    //   isLoading = true;
+    // });
+
+    //..............................
+    final result = await Navigator.push(context, 
+    MaterialPageRoute(builder: (context) => AddTodoPage(todo: item)));
+
+    if(result!= null && result is Map){
+      setState(() {
+        selectedDate = result['selectedDate'];
+        selectedTime = result['selectedTime'];
+        isLoading = true;
+      });
+    }
+    //..............................
     fetchTodo();
   }
 
   Future<void> navigateToAddPage() async {
-    final route = MaterialPageRoute(builder: (context) => const AddTodoPage());
-    await Navigator.push(context, route);
-    setState(() {
-      isLoading = true;
-    });
+    // final route = MaterialPageRoute(builder: (context) => const AddTodoPage());
+    // await Navigator.push(context, route);
+    // setState(() {
+    //   isLoading = true;
+    // });
+    //..............................
+    final result = await Navigator.push(context, 
+    MaterialPageRoute(builder: (context) => AddTodoPage()));
+
+    if(result!= null && result is Map){
+      setState(() {
+        selectedDate = result['selectedDate'];
+        selectedTime = result['selectedTime'];
+        isLoading = true;
+      });
+    }
+    //..............................
     fetchTodo();
   }
 

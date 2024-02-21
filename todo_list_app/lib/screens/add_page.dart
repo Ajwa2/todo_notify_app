@@ -7,9 +7,10 @@ import 'package:todo_list_app/utils/snackbar_helper.dart';
 class AddTodoPage extends StatefulWidget {
   final Map? todo;
   const AddTodoPage({
-    super.key,
+    Key? key,
+    //super.key,
     this.todo,
-  });
+  }) : super(key: key);
 
   @override
   State<AddTodoPage> createState() => _AddTodoPageState();
@@ -92,10 +93,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
       final description = todo['description'];
       titleController.text = title;
       descriptionController.text = description;
-      // -------------------------------------
       selectedDate = todo['dueDate'];
       selectedTime = todo['dueTime'];
-      //---------------------------------------
     }
   }
 
@@ -130,12 +129,16 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 Text(
                   //_dateTime.toString(),
                   //DateFormat.yMMMd().format(selectedDate!).toString(),
-                  selectedDate != null? DateFormat.yMMMd().format(selectedDate!).toString(): 'No Date Selected' ,
+                  selectedDate != null
+                      ? DateFormat.yMMMd().format(selectedDate!).toString()
+                      : 'No Date Selected',
                   style: TextStyle(fontSize: 15),
                 ),
                 Text(
                   //selectedTime!.format(context).toString(),
-                  selectedTime!= null? selectedTime!.format(context).toString(): 'No Time Selected',
+                  selectedTime != null
+                      ? selectedTime!.format(context).toString()
+                      : 'No Time Selected',
                   style: TextStyle(fontSize: 15),
                 ),
               ],
@@ -183,14 +186,14 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ));
   }
 
-
   void _showDatePicker() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
-    );   if (pickedDate != null) {
+    );
+    if (pickedDate != null) {
       setState(() {
         selectedDate = pickedDate;
       });
@@ -200,7 +203,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
   void _showTimePicker() async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: selectedTime ?? TimeOfDay.now(),
     );
     if (pickedTime != null && pickedTime != selectedTime) {
       setState(() {
@@ -217,6 +220,13 @@ class _AddTodoPageState extends State<AddTodoPage> {
     }
     final id = todo['_id'];
     //submit updated data to the server
+    //-------------------------------------
+    // final Map<String, dynamic> updatedData = {
+    //   'dueDate' : selectedDate?.toIso8601String(),
+    //   'dueTime' : selectedTime?.format(context)
+    // };
+
+    //-------------------------------------
     final isSuccess = await TodoService.updateTodo(id, body);
     if (isSuccess) {
       showSuccessMessage(context, message: 'updation Success');
@@ -227,6 +237,13 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   Future<void> submitData() async {
     //submit data to the server
+     //-------------------------------------
+    // final Map<String, dynamic> todoData = {
+    //   'dueDate' : selectedDate?.toIso8601String(),
+    //   'dueTime' : selectedTime?.format(context)
+    // };
+
+    //-------------------------------------
     final isSuccess = await TodoService.AddTodo(body);
     if (isSuccess) {
       titleController.text = '';
@@ -237,7 +254,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     }
   }
 
-  Map get body {
+  Map<String, dynamic> get body {
     //get the data from form
     final title = titleController.text;
     final description = descriptionController.text;
@@ -245,8 +262,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
       "title": title,
       "description": description,
       "is_completed": false,
-      "dueDate":selectedDate,
-      "dueTime":selectedTime,
+      "dueDate": selectedDate?.toIso8601String(),
+      "dueTime": selectedTime?.format(context),
     };
   }
 }
