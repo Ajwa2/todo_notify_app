@@ -23,6 +23,8 @@ class TodoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = item['_id'] as String;
     // final dueDate = item['dueDate'] != null? DateTime.parse(item['dueDate'!]) : null;
+    final DateTime? dueDate = item['dueDate'] as DateTime?;
+    final TimeOfDay? dueTime = item['dueTime'] as TimeOfDay?;
     return Card(
       child: ListTile(
         leading: CircleAvatar(child: Text('${index + 1}')),
@@ -34,12 +36,14 @@ class TodoCard extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('${DateFormat.yMMMd().format(selectedDate)}'),
+                //Text('${ DateFormat.yMMMd().format(selectedDate)}'),
+                Text('${dueDate!= null? DateFormat.yMMMd().format(dueDate): 'No Date selected'}'),
                 // Text(DateFormat.yMMMd().format(dateTime).toString()),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: 
-                  Text(selectedTime.format(context).toString()),
+                  //Text(selectedTime.format(context).toString()),
+                  Text('${dueTime!= null ? dueTime.format(context): 'No Time selected'}'),
                   // Text(timeOfDay.format(context).toString()),
                 )
               ],

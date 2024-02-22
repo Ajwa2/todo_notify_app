@@ -74,7 +74,11 @@ class _TodoListPageState extends State<TodoListPage> {
 
     //..............................
     final result = await Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => AddTodoPage(todo: item)));
+    MaterialPageRoute(builder: (context) => AddTodoPage(
+      todo: item,
+      selectedDate:selectedDate,
+      selectedTime:selectedTime
+      )));
 
     if(result!= null && result is Map){
       setState(() {
@@ -95,7 +99,11 @@ class _TodoListPageState extends State<TodoListPage> {
     // });
     //..............................
     final result = await Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => AddTodoPage()));
+    MaterialPageRoute(builder: (context) => AddTodoPage(
+      //onDateTimeSelected: (DateTime? selectedDate,TimeOfDay? selectedTime),
+      selectedDate:selectedDate,
+      selectedTime:selectedTime
+    )));
 
     if(result!= null && result is Map){
       setState(() {
