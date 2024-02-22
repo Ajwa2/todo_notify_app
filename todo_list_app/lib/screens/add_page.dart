@@ -6,10 +6,16 @@ import 'package:todo_list_app/utils/snackbar_helper.dart';
 
 class AddTodoPage extends StatefulWidget {
   final Map? todo;
+  //final Function(DateTime?, TimeOfDay?) onDateTimeSelected;
+  final DateTime selectedDate;
+  final TimeOfDay selectedTime;
   const AddTodoPage({
     Key? key,
     //super.key,
     this.todo,
+    //required this.onDateTimeSelected,
+    required this.selectedDate,
+    required this.selectedTime,
   }) : super(key: key);
 
   @override
@@ -196,6 +202,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     if (pickedDate != null) {
       setState(() {
         selectedDate = pickedDate;
+        //widget.onDateTimeSelected(selectedDate, selectedTime);
       });
     }
   }
@@ -208,6 +215,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     if (pickedTime != null && pickedTime != selectedTime) {
       setState(() {
         selectedTime = pickedTime;
+        //widget.onDateTimeSelected(selectedDate, selectedTime);
       });
     }
   }
@@ -237,7 +245,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   Future<void> submitData() async {
     //submit data to the server
-     //-------------------------------------
+    //-------------------------------------
     // final Map<String, dynamic> todoData = {
     //   'dueDate' : selectedDate?.toIso8601String(),
     //   'dueTime' : selectedTime?.format(context)
@@ -267,3 +275,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
     };
   }
 }
+// void saveTodo(){
+//   final result = {
+//     'selectedDate': selectedDate,
+//     'selectedTime': selectedTime,
+//   };
+//   Navigator.pop(context,result);
+// }
