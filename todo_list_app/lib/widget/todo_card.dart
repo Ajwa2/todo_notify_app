@@ -1,65 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 class TodoCard extends StatelessWidget {
   final int index;
   final Map item;
   final Function(Map) navigateEdit;
   final Function(String) deleteById;
-  final DateTime selectedDate;
-  final TimeOfDay selectedTime;
+  // final DateTime? selectedDate;
+  // final TimeOfDay? selectedTime;
 
   const TodoCard({
-    super.key,
+    Key? key,
     required this.index,
     required this.item,
     required this.navigateEdit,
     required this.deleteById,
-    required this.selectedDate,
-    required this.selectedTime,
-  });
+    // required this.selectedDate,
+    // required this.selectedTime,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final id = item['_id'] as String;
-    // final dueDate = item['dueDate'] != null? DateTime.parse(item['dueDate'!]) : null;
-    final DateTime? dueDate = item['dueDate'] as DateTime?;
-    final TimeOfDay? dueTime = item['dueTime'] as TimeOfDay?;
+    //print(item);
+    //print(item['created_at']);
+    String createdAt = item["created_at"];
+    DateTime dateTime = DateTime.parse(createdAt);
+    String formattedDate =  DateFormat.yMMMd().format(dateTime);
     return Card(
       child: ListTile(
-        leading: CircleAvatar(child: Text('${index + 1}')),
-        title: Text(item['title']),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(item['description']),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+            Row(
               children: [
-                //Text('${ DateFormat.yMMMd().format(selectedDate)}'),
-                Text('${dueDate!= null? DateFormat.yMMMd().format(dueDate): 'No Date selected'}'),
-                // Text(DateFormat.yMMMd().format(dateTime).toString()),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: 
-                  //Text(selectedTime.format(context).toString()),
-                  Text('${dueTime!= null ? dueTime.format(context): 'No Time selected'}'),
-                  // Text(timeOfDay.format(context).toString()),
-                )
+                CircleAvatar(
+              radius: 15.0,
+              child: Text('${index + 1}'),
+              backgroundColor: Colors.black38,
+            ),
+            const SizedBox(width: 10,),
+            Text(item['title']),
               ],
             ),
-          ],
-        ),
-        trailing: PopupMenuButton(onSelected: (value) {
-          if (value == 'edit') {
-            //open the edit button
-            navigateEdit(item);
-          } else if (value == 'delete') {
-            //delete and remove the item
-            deleteById(id);
-          }
-        }, itemBuilder: (context) {
-          return const [
+
+            PopupMenuButton(onSelected: (value) {
+                  if (value == 'edit') {
+                    navigateEdit(item);
+                  } else if (value == 'delete') {
+                    deleteById(id);
+                  }
+                }, itemBuilder: (context) {
+              return const [
             PopupMenuItem(
               value: 'edit',
               child: Text('Edit'),
@@ -69,7 +62,52 @@ class TodoCard extends StatelessWidget {
               child: Text('Delete'),
             )
           ];
-        }),
+        }
+        ),
+          ],
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: Colors.black12,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(item['description']),
+              ),
+              ),
+            Padding(
+              padding: const EdgeInsets.only(left: 178.0,top: 10.0),
+              child: Text(
+                formattedDate,
+                style: TextStyle(
+                  fontSize: 12
+                ),
+                ),
+            )
+          ],
+        ), 
+        
+        //
+        // trailing: PopupMenuButton(onSelected: (value) {
+        //   if (value == 'edit') {
+        //     navigateEdit(item);
+        //   } else if (value == 'delete') {
+        //     deleteById(id);
+        //   }
+        // }, itemBuilder: (context) {
+        //   return const [
+        //     PopupMenuItem(
+        //       value: 'edit',
+        //       child: Text('Edit'),
+        //     ),
+        //     PopupMenuItem(
+        //       value: 'delete',
+        //       child: Text('Delete'),
+        //     )
+        //   ];
+        // }
+        // ),
       ),
     );
   }

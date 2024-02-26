@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:todo_list_app/services/todo_service.dart';
 import 'package:todo_list_app/utils/snackbar_helper.dart';
-// import 'package:intl/intl.dart';
 
 class AddTodoPage extends StatefulWidget {
   final Map? todo;
-  //final Function(DateTime?, TimeOfDay?) onDateTimeSelected;
-  final DateTime selectedDate;
-  final TimeOfDay selectedTime;
   const AddTodoPage({
     Key? key,
-    //super.key,
     this.todo,
-    //required this.onDateTimeSelected,
-    required this.selectedDate,
-    required this.selectedTime,
   }) : super(key: key);
 
   @override
@@ -25,69 +17,8 @@ class AddTodoPage extends StatefulWidget {
 class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  
   bool isEdit = false;
-
-//create dateline and timeline variable
-  // DateTime dateTime = DateTime.now();
-  //TimeOfDay timeOfDay = TimeOfDay(hour: 8, minute: 30);
-
-//show date picker method
-  // void _showDatePiker() {
-  //   showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2030),
-  //   ).then((value) {
-  //     setState(() {
-  //       dateTime = value!;
-  //     });
-  //   });
-  // }
-
-//-------------------------------------------------
-
-  //trail decleration
-
-  DateTime? selectedDate;
-
-  // void _showDatePicker() async {
-  //   final DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime.now(),
-  //     lastDate: DateTime(2100),
-  //   );   if (pickedDate != null) {
-  //     setState(() {
-  //       selectedDate = pickedDate;
-  //     });
-  //   }
-  // }
-
-  TimeOfDay? selectedTime;
-
-  // void _showTimePicker() async {
-  //   final TimeOfDay? pickedTime = await showTimePicker(
-  //     context: context,
-  //     initialTime: TimeOfDay.now(),
-  //   );
-
-  //   if (pickedTime != null && pickedTime != selectedTime) {
-  //     setState(() {
-  //       selectedTime = pickedTime;
-  //     });
-  //   }
-  // }
-//-------------------------------------------------
-//show date picker method
-  // void _showTimePicker() {
-  //   showTimePicker(context: context, initialTime: TimeOfDay.now())
-  //       .then((value) {
-  //     setState(() {
-  //       timeOfDay = value!;
-  //     });
-  //   });
-  // }
 
   @override
   void initState() {
@@ -99,11 +30,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
       final description = todo['description'];
       titleController.text = title;
       descriptionController.text = description;
-      selectedDate = todo['dueDate'];
-      selectedTime = todo['dueTime'];
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,70 +44,72 @@ class _AddTodoPageState extends State<AddTodoPage> {
             TextField(
               controller: titleController,
               decoration: const InputDecoration(hintText: 'Title'),
+              onChanged: (value) => enforceWordLimit(value, titleController),
             ),
             const SizedBox(height: 20),
             TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(hintText: 'Description'),
-              keyboardType: TextInputType.multiline,
-              minLines: 5,
-              maxLines: 8,
-            ),
+                controller: descriptionController,
+                decoration: const InputDecoration(hintText: 'Description'),
+                keyboardType: TextInputType.multiline,
+                minLines: 5,
+                maxLines: 8,
+                onChanged: (value) =>
+                    enforceWordLimit2(value, descriptionController)),
             const SizedBox(
               height: 20,
             ),
             //display the choosen date
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  //_dateTime.toString(),
-                  //DateFormat.yMMMd().format(selectedDate!).toString(),
-                  selectedDate != null
-                      ? DateFormat.yMMMd().format(selectedDate!).toString()
-                      : 'No Date Selected',
-                  style: TextStyle(fontSize: 15),
-                ),
-                Text(
-                  //selectedTime!.format(context).toString(),
-                  selectedTime != null
-                      ? selectedTime!.format(context).toString()
-                      : 'No Time Selected',
-                  style: TextStyle(fontSize: 15),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MaterialButton(
-                  onPressed: _showDatePicker,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Add a Date',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ),
-                MaterialButton(
-                  onPressed: _showTimePicker,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Pick Time',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    ),
-                  ),
-                )
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     Text(
+            //       //_dateTime.toString(),
+            //       //DateFormat.yMMMd().format(selectedDate!).toString(),
+            //       created_at != null
+            //           ? DateFormat.yMMMd().format(created_at!).toString()
+            //           : '',
+            //       style: TextStyle(fontSize: 15),
+            //     ),
+            //     Text(
+            //       //selectedTime!.format(context).toString(),
+            //       selectedTime != null
+            //           ? selectedTime!.format(context).toString()
+            //           : '',
+            //       style: TextStyle(fontSize: 15),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     MaterialButton(
+            //       onPressed: _showDatePicker,
+            //       child: const Padding(
+            //         padding: EdgeInsets.all(8.0),
+            //         child: Text(
+            //           'Add a Date',
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             fontSize: 15,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     MaterialButton(
+            //       onPressed: _showTimePicker,
+            //       child: Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Text(
+            //           'Pick Time',
+            //           style: TextStyle(color: Colors.white, fontSize: 15),
+            //         ),
+            //       ),
+            //     )
+            //   ],
+            // ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: isEdit ? updateData : submitData,
@@ -192,93 +122,95 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ));
   }
 
-  void _showDatePicker() async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        selectedDate = pickedDate;
-        //widget.onDateTimeSelected(selectedDate, selectedTime);
-      });
-    }
-  }
+  // void _showDatePicker() async {
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: created_at ?? DateTime.now(),
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime(2100),
+  //   );
+  //   if (pickedDate != null) {
+  //     setState(() {
+  //       created_at = pickedDate;
+  //     });
+  //   }
+  // }
 
-  void _showTimePicker() async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: selectedTime ?? TimeOfDay.now(),
-    );
-    if (pickedTime != null && pickedTime != selectedTime) {
-      setState(() {
-        selectedTime = pickedTime;
-        //widget.onDateTimeSelected(selectedDate, selectedTime);
-      });
-    }
-  }
+  // void _showTimePicker() async {
+  //   final TimeOfDay? pickedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: selectedTime ?? TimeOfDay.now(),
+  //   );
+  //   if (pickedTime != null && pickedTime != selectedTime) {
+  //     setState(() {
+  //       selectedTime = pickedTime;
+  //     });
+  //   }
+  // }
 
   Future<void> updateData() async {
     final todo = widget.todo;
     if (todo == null) {
-      print('you can not call updated without todo data');
+      print('you cannot call updated without todo data');
       return;
     }
     final id = todo['_id'];
     //submit updated data to the server
-    //-------------------------------------
-    // final Map<String, dynamic> updatedData = {
-    //   'dueDate' : selectedDate?.toIso8601String(),
-    //   'dueTime' : selectedTime?.format(context)
-    // };
-
-    //-------------------------------------
     final isSuccess = await TodoService.updateTodo(id, body);
     if (isSuccess) {
       showSuccessMessage(context, message: 'updation Success');
+      Navigator.pop(context);
     } else {
       showErrorMessage(context, message: 'updation Failed');
     }
   }
 
   Future<void> submitData() async {
+    print("before");
+    print(body);
     //submit data to the server
-    //-------------------------------------
-    // final Map<String, dynamic> todoData = {
-    //   'dueDate' : selectedDate?.toIso8601String(),
-    //   'dueTime' : selectedTime?.format(context)
-    // };
-
-    //-------------------------------------
     final isSuccess = await TodoService.AddTodo(body);
+    print("after");
+    print(body);
     if (isSuccess) {
+      //after submitting the data make the textfield of the title and description none or erase what id written
       titleController.text = '';
       descriptionController.text = '';
       showSuccessMessage(context, message: 'creation Success');
+      Navigator.pop(context);
     } else {
       showErrorMessage(context, message: 'Creation Failed');
     }
   }
 
   Map<String, dynamic> get body {
-    //get the data from form
+    //get the data from
     final title = titleController.text;
     final description = descriptionController.text;
+    final scheduled_for = DateTime.now().toIso8601String();
     return {
       "title": title,
       "description": description,
       "is_completed": false,
-      "dueDate": selectedDate?.toIso8601String(),
-      "dueTime": selectedTime?.format(context),
+      "scheduled_for":scheduled_for,
     };
   }
 }
-// void saveTodo(){
-//   final result = {
-//     'selectedDate': selectedDate,
-//     'selectedTime': selectedTime,
-//   };
-//   Navigator.pop(context,result);
-// }
+
+void enforceWordLimit(String value, TextEditingController controller) {
+  List<String> words = value.trim().split(' ');
+  if (words.length > 5) {
+    controller.text = words.take(5).join(' ');
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
+  }
+}
+
+void enforceWordLimit2(String value, TextEditingController controller) {
+  List<String> words = value.trim().split(' ');
+  if (words.length > 50) {
+    controller.text = words.take(50).join(' ');
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
+  }
+}
