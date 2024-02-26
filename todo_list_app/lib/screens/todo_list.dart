@@ -14,9 +14,8 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   bool isLoading = true;
   List items = [];
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
   @override
+  //call for the fetchtodo method 
   void initState() {
     super.initState();
     fetchTodo();
@@ -26,7 +25,7 @@ class _TodoListPageState extends State<TodoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo List'),
+        title: const Text('Note App'),
         actions: [
           IconButton(onPressed: navigateToAddPage, icon: Icon(Icons.add))
         ],
@@ -40,7 +39,7 @@ class _TodoListPageState extends State<TodoListPage> {
             visible: items.isNotEmpty,
             replacement: Center(
               child: Text(
-                'No Todo Item',
+                'Empty Item',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
@@ -53,9 +52,7 @@ class _TodoListPageState extends State<TodoListPage> {
                       index: index,
                       item: item,
                       navigateEdit: navigateToEditPage,
-                      deleteById: deleteById,
-                      selectedDate: selectedDate,
-                      selectedTime: selectedTime);
+                      deleteById: deleteById,);
                 }),
           ),
         ),
@@ -64,55 +61,54 @@ class _TodoListPageState extends State<TodoListPage> {
   }
 
   Future<void> navigateToEditPage(Map item) async {
-    // final route = MaterialPageRoute(
-    //   builder: (context) => AddTodoPage(todo: item),
-    // );
-    // await Navigator.push(context, route);
-    // setState(() {
-    //   isLoading = true;
-    // });
-
+    final route = MaterialPageRoute(
+      builder: (context) => AddTodoPage(todo: item),
+    );
+    await Navigator.push(context, route);
+    setState(() {
+      isLoading = true;
+    });
     //..............................
-    final result = await Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => AddTodoPage(
-      todo: item,
-      selectedDate:selectedDate,
-      selectedTime:selectedTime
-      )));
-
-    if(result!= null && result is Map){
-      setState(() {
-        selectedDate = result['selectedDate'];
-        selectedTime = result['selectedTime'];
-        isLoading = true;
-      });
-    }
-    //..............................
+    // final result = await Navigator.push<Map>(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => AddTodoPage(
+    //             todo: item,
+    //             //created_at: created_at,
+    //             selectedTime: selectedTime)
+    //             )
+    //             );
+    // if (result != null) {
+    //   setState(() {
+    //     selectedDate = result['selectedDate'] ?? selectedDate;
+    //     selectedTime = result['selectedTime'] ?? selectedDate;
+    //     isLoading = true;
+    //   });
+    // }
     fetchTodo();
   }
 
   Future<void> navigateToAddPage() async {
-    // final route = MaterialPageRoute(builder: (context) => const AddTodoPage());
-    // await Navigator.push(context, route);
-    // setState(() {
-    //   isLoading = true;
-    // });
+    final route = MaterialPageRoute(
+      builder: (context) => const AddTodoPage());
+      await Navigator.push(context, route);
+    setState(() {
+      isLoading = true;
+    });
     //..............................
-    final result = await Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => AddTodoPage(
-      //onDateTimeSelected: (DateTime? selectedDate,TimeOfDay? selectedTime),
-      selectedDate:selectedDate,
-      selectedTime:selectedTime
-    )));
-
-    if(result!= null && result is Map){
-      setState(() {
-        selectedDate = result['selectedDate'];
-        selectedTime = result['selectedTime'];
-        isLoading = true;
-      });
-    }
-    //..............................
+    // final result = await Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => AddTodoPage(
+    //             //selectedDate: selectedDate,
+    //             selectedTime: selectedTime)));
+    // if (result != null && result is Map) {
+    //   setState(() {
+    //     selectedDate = result['selectedDate'] ?? selectedDate;
+    //     selectedTime = result['selectedTime'] ?? selectedTime;
+    //     isLoading = true;
+    //   });
+    // }
     fetchTodo();
   }
 
@@ -132,6 +128,7 @@ class _TodoListPageState extends State<TodoListPage> {
 
   Future<void> fetchTodo() async {
     final response = await TodoService.fetchTodos();
+    //print(response);
     if (response != null) {
       setState(() {
         items = response;
