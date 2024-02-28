@@ -17,7 +17,7 @@ class AddTodoPage extends StatefulWidget {
 class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  
+  TextEditingController timeController = TextEditingController();
   bool isEdit = false;
 
   @override
@@ -28,10 +28,13 @@ class _AddTodoPageState extends State<AddTodoPage> {
       isEdit = true;
       final title = todo['title'];
       final description = todo['description'];
+     // final scheduled_for = todo['scheduled_for'];
       titleController.text = title;
       descriptionController.text = description;
+      //timeController.text = scheduled_for;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +60,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     enforceWordLimit2(value, descriptionController)),
             const SizedBox(
               height: 20,
+            ),
+            TextField(
+              controller: timeController,
+              decoration: const InputDecoration(hintText: "Schedule a time"),
             ),
             //display the choosen date
             // Row(
@@ -192,7 +199,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
       "title": title,
       "description": description,
       "is_completed": false,
-      "scheduled_for":scheduled_for,
+      "scheduled_for": scheduled_for,
     };
   }
 }
